@@ -1,9 +1,13 @@
 {-# LANGUAGE OverloadedStrings, FlexibleContexts, TypeFamilies, QuasiQuotes, TemplateHaskell, DeriveGeneric #-}
 module WeatherService.Service (WeatherField(..)
                               , dayHandler
-                              , dayPutHandler) where
+                              , dayPutHandler
+                              , dayRangeHandler
+                              , dayMaxHandler
+                              , dayAboveHandler) where
 {-| Semester 2 assignment for CI285, University of Brighton
     Jim Burton <j.burton@brighton.ac.uk>
+    Modifier: Chris Tran - 15800120
 -}
 import           System.Log.Logger ( updateGlobalLogger
                                    , rootLoggerName
@@ -34,7 +38,7 @@ instance ToRow WeatherField where -- ^ Marshal data from our ADT to the DB
 instance ToJSON   WeatherField -- ^ Marshal data from our ADT to JSON
 instance FromJSON WeatherField -- ^ Marshal data from JSON to our ADT
 
-{-| Handle reuests for a single date. -}
+{-| Handle requests for a single date. -}
 dayHandler :: Text -> Connection -> ServerPart Response
 dayHandler d conn = do
   r <- liftIO (queryNamed conn "SELECT the_date, temperature \
@@ -45,7 +49,7 @@ dayHandler d conn = do
     [] -> notFoundHandler
     _  -> ok $ toResponse (listToOutput r)
 
-{-| Handle PUT reuests for date/temperature pairs. -}
+{-| Handle PUT requests for date/temperature pairs. -}
 dayPutHandler :: Text -> Text -> Connection -> ServerPart Response
 dayPutHandler d t conn = do
   r <- liftIO (queryNamed conn "SELECT the_date, temperature \
@@ -81,3 +85,37 @@ emptyJSONResponse = toResponse (pack "[]")
 listToOutput :: ToJSON a => [a] -> String
 listToOutput xs = "[" ++ intercalate "," (map (BC.unpack . encode) xs) ++ "]"
 
+{-| Handle requests for dates in a range.-}
+dayRangeHandler :: Text -> Text -> Connection -> ServerPart Response
+dayRangeHandler d1 d2 conn = do
+  r <- liftIO (queryNamed conn "SELECT the_date, temperature \
+                               \ FROM  weather \
+                               \ WHERE the_date BETWEEN :dt1 AND :dt2"
+                               [":dt1" := d1,":dt2" := d2] :: IO [WeatherField])
+  liftIO $ debugM "Range Query" (listToOutput r)
+  case r of
+    [] -> notFoundHandler
+    _  -> ok $ toResponse (listToOutput r)
+
+{-| Handle requests for dates in a range with max temperature.-}
+dayMaxHandler :: Text -> Text -> Connection -> ServerPart Response
+dayMaxHandler d1 d2 conn = do
+  r <- liftIO (queryNamed conn "SELECT the_date, MAX(temperature) \
+                               \ FROM  weather \
+                               \ WHERE the_date BETWEEN :dt1 AND :dt2"
+                               [":dt1" := d1,":dt2" := d2] :: IO [WeatherField])
+  liftIO $ debugM "Max Query" (listToOutput r)
+  case r of
+    [] -> notFoundHandler
+    _  -> ok $ toResponse (listToOutput r)
+
+{-| Handle requests for dates that has a higher temperature than t. -}
+dayAboveHandler :: Float -> Connection -> ServerPart Response
+dayAboveHandler t conn = do
+  r <- liftIO (queryNamed conn "SELECT the_date, temperature \
+                               \ FROM  weather \
+                               \ WHERE temperature >= :dt" [":dt" := t] :: IO [WeatherField])
+  liftIO $ debugM "Above Query" (listToOutput r)
+  case r of
+    [] -> notFoundHandler
+    _  -> ok $ toResponse (listToOutput r)
