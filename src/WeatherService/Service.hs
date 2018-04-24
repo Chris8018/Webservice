@@ -2,9 +2,9 @@
 module WeatherService.Service (WeatherField(..)
                               , dayHandler
                               , dayPutHandler
-                              , dayRangeHandler
-                              , dayMaxHandler
-                              , dayAboveHandler) where
+                              , rangeHandler
+                              , maxHandler
+                              , aboveTHandler) where
 {-| Semester 2 assignment for CI285, University of Brighton
     Jim Burton <j.burton@brighton.ac.uk>
     Modifier: Chris Tran - 15800120
@@ -85,9 +85,9 @@ emptyJSONResponse = toResponse (pack "[]")
 listToOutput :: ToJSON a => [a] -> String
 listToOutput xs = "[" ++ intercalate "," (map (BC.unpack . encode) xs) ++ "]"
 
-{-| Handle requests for dates in a range.-}
-dayRangeHandler :: Text -> Text -> Connection -> ServerPart Response
-dayRangeHandler d1 d2 conn = do
+{-| Handle requests for dates in between date 1 and date 2.-}
+rangeHandler :: Text -> Text -> Connection -> ServerPart Response
+rangeHandler d1 d2 conn = do
   r <- liftIO (queryNamed conn "SELECT the_date, temperature \
                                \ FROM  weather \
                                \ WHERE the_date BETWEEN :dt1 AND :dt2"
@@ -97,9 +97,9 @@ dayRangeHandler d1 d2 conn = do
     [] -> notFoundHandler
     _  -> ok $ toResponse (listToOutput r)
 
-{-| Handle requests for dates in a range with max temperature.-}
-dayMaxHandler :: Text -> Text -> Connection -> ServerPart Response
-dayMaxHandler d1 d2 conn = do
+{-| Handle requests for dates in between date 1 and date 2 with max temperature.-}
+maxHandler :: Text -> Text -> Connection -> ServerPart Response
+maxHandler d1 d2 conn = do
   r <- liftIO (queryNamed conn "SELECT the_date, MAX(temperature) \
                                \ FROM  weather \
                                \ WHERE the_date BETWEEN :dt1 AND :dt2"
@@ -110,8 +110,8 @@ dayMaxHandler d1 d2 conn = do
     _  -> ok $ toResponse (listToOutput r)
 
 {-| Handle requests for dates that has a higher temperature than t. -}
-dayAboveHandler :: Float -> Connection -> ServerPart Response
-dayAboveHandler t conn = do
+aboveTHandler :: Float -> Connection -> ServerPart Response
+aboveTHandler t conn = do
   r <- liftIO (queryNamed conn "SELECT the_date, temperature \
                                \ FROM  weather \
                                \ WHERE temperature >= :dt" [":dt" := t] :: IO [WeatherField])
