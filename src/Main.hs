@@ -2,6 +2,7 @@
 module Main where
 {-| Semester 2 assignment for CI285, University of Brighton
     Jim Burton <j.burton@brighton.ac.uk>
+    Modifier: Chris Tran - 15800120
 -}
 import           System.Log.Logger ( updateGlobalLogger
                                    , rootLoggerName
@@ -34,4 +35,5 @@ main = do
                                 path $ \d1 -> path $ \d2 -> maxHandler d1 d2 conn
       , dirs "weather/above" $ do method GET
                                   path $ \t -> aboveTHandler t conn
+      , do resp 405 $ toResponse $ pack "Method is not allowed\n"
       ]
