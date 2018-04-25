@@ -16,6 +16,8 @@ import           Database.SQLite.Simple
 
 import           WeatherService.Service
 
+import           Data.Text              (pack)
+
 {-| Entry point. Connects to the database and passes the connection to the
 routing function. -}
 main :: IO()
