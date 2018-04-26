@@ -2,7 +2,7 @@
 
 This project contains a web service written in Haskell using Happstack and SQLite.
 The web service provides an interface to (fictitious, randomly generated) weather 
-readings taken at the North Pole during 2017. It has 4 endpoints,
+readings taken at the North Pole during 2017. It has one endpoint, `weather/date/`,  
 the response to which will depend on the request type.
 
 If the webservice is running on `localhost` on port 8000 and receives a `GET` or
@@ -29,8 +29,8 @@ database. This call will return 200 and an empty JSON object if everything went 
 **If you are using Windows, you should install CygWin and use the CygWin terminal instead 
 of the Windows command prompt, as several of the packages you need require a bash-like environment.**
 
-**If you are working on this code in the labs, do not install it on a Windows drive
-(e.g. `~/W_DRIVE` or `~/M_DRIVE`), as cabal is known to have problems with Windows network shares.**
+**If you are working on this code in the labs, do not install it on a Windows drive (e.g. `~/W_DRIVE` 
+or `~/M_DRIVE`), as cabal is known to have problems with Windows network shares.**
 
 To set the project up you need to start by making sure that you have the latest version of
 `cabal-install` on this machine:
@@ -85,3 +85,42 @@ While the service is running open a new terminal and run the tests with `cabal t
 Read the log, which will be in a file called something like 
 `dist/test/haskell-webservice-0.1.0.0-test-webservice.log`.
 
+## Assignment
+
+Your assignment is to extend the webservice in various ways. Before doing so you should read 
+the first two chapters of the [HappStack Book](http://happstack.com/docs/crashcourse/index.html). 
+You may also need to check the docs for [HappStack](https://hackage.haskell.org/package/happstack-server)
+and [sqlite-simple](https://hackage.haskell.org/package/sqlite-simple-0.4.14.0/docs/Database-SQLite-Simple.html), 
+the library we are using to interact with the database. As you work on the methods, keep running the tests
+and calling the webservice with `curl` or a browser to see what comes back.
+
+1. Add a new endpoint to the webservice, `weather/range/d1/d2`, where `d1` and `d2` are dates in the format 
+`YYYY-mm-dd`. When this endpoint receives a `GET` request it should return all records in the database that
+fall between `d1` and `d2` (i.e. greater than or equal to `d1` and less than or equal to `d2`) as an array of 
+JSON objects. 
+
+2. Add a new endpoint to the webservice, `weather/max/d1/d2`, where `d1` and `d2` are dates in the format 
+`YYYY-mm-dd`. When this endpoint receives a `GET` request it should return the details of the day with the
+maximum temperature between `d1` and `d2` (i.e. greater than or equal to `d1` and less than or equal to `d2`) 
+as an array containing a single JSON object. 
+
+3. Add a new endpoint to the webservice, `weather/above/t`, where `t` is a signed floating point number. 
+When this endpoint receives a `GET` request it should return all records in the database where the
+temperature is greater than or equal to `t` as an array of JSON objects. Other request methods should result 
+in a 405 response code ("Method not allowed") and an empty JSON object.
+
+4. **Extension** Convert the web service to use the `web-routes` library as described in 
+[chapter 7 of the HappStack Book](http://happstack.com/docs/crashcourse/WebRoutes.html#web-routes).
+
+## Submission instructions
+
+Make a github account if you don't have one already. Clone this repository and save your work there.
+To submit your work, submit the address of your repository on studentcentral. No other form of submission
+is accepted.
+
+## Marking criteria
+
+20 marks are available for each of the four criteria, with 20 marks available for the elegance, efficiency
+and readability of the code. Read one of the Haskell style guides linked to from studentcentral and use
+the `hlint` tool to improve your mark in this criterion. These marking criteria are indicative, meaning that
+I may award extra marks for work that uses an interesting approach and shows independent learning. 

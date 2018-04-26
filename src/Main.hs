@@ -1,4 +1,5 @@
-{-# LANGUAGE OverloadedStrings, FlexibleContexts, TypeFamilies, QuasiQuotes, TemplateHaskell, DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings, FlexibleContexts, TypeFamilies, QuasiQuotes
+  , TemplateHaskell, DeriveGeneric #-}
 module Main where
 {-| Semester 2 assignment for CI285, University of Brighton
     Jim Burton <j.burton@brighton.ac.uk>
@@ -13,10 +14,9 @@ import           System.Log.Logger ( updateGlobalLogger
 import           Control.Monad          (msum)
 import           Happstack.Server  
 import           Database.SQLite.Simple
+import           Data.Text              (pack)
 
 import           WeatherService.Service
-
-import           Data.Text              (pack)
 
 {-| Entry point. Connects to the database and passes the connection to the
 routing function. -}
@@ -37,5 +37,5 @@ main = do
                                 path $ \d1 -> path $ \d2 -> maxHandler d1 d2 conn
       , dirs "weather/above" $ do method GET
                                   path $ \t -> aboveTHandler t conn
-      , do resp 405 $ toResponse $ pack "Method is not allowed\n"
+      , resp 405 $ toResponse $ pack "Method is not allowed\n"
       ]
