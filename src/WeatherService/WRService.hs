@@ -13,8 +13,6 @@ module WeatherService.WRService (WeatherField(..)
     Modifier: Chris Tran - 15800120
     This file was done base on Service.hs
 -}
-import           Prelude                    hiding (head)
-
 import           System.Log.Logger          (debugM)
 import           Control.Monad.IO.Class     (liftIO)
 import           Control.Monad              (msum)
