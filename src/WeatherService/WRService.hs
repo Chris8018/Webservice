@@ -45,7 +45,7 @@ instance FromJSON WeatherField -- ^ Marshal data from JSON to our ADT
 
 {-| Site Map -}
 data Sitemap
-  = Weather           --weather/                  (home page)
+  = Weather           --weather/                      (home page)
   | Date Text         --weather/date/YYYY-mm-dd
   | Put Text Text     --weather/put/date/temperature
   | Range Text Text   --weather/range/date1/date2
