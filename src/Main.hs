@@ -29,6 +29,8 @@ main = do
     msum [
       dirs "weather/date" $ do method [GET, POST]
                                path $ \d -> dayHandler d conn
+      {-, dirs "weather/put" $ do method GET
+                                       path $ \d -> path $ \t -> dayPutHandler d t conn-}
       , dirs "weather/date" $ do method PUT
                                  path $ \d -> path $ \t -> dayPutHandler d t conn
       , dirs "weather/range" $ do method GET

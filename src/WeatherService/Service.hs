@@ -51,6 +51,7 @@ dayHandler d conn = do
     _  -> ok $ toResponse $ listToOutput r
 
 {-| Handle PUT requests for date/temperature pairs. -}
+--Not Working
 dayPutHandler :: Text -> Text -> Connection -> ServerPart Response
 dayPutHandler d t conn = do
   r <- liftIO (queryNamed conn "SELECT the_date, temperature \
@@ -65,13 +66,17 @@ dayPutHandler d t conn = do
 insertHandler :: Text -> Text -> Connection -> ServerPart Response
 insertHandler d t conn = do
   let t' = (read $ unpack t)::Float
-  liftIO (execute conn "INSERT INTO weather (the_date, temperature) VALUES (?,?)" (WeatherField d t'))
+  liftIO (execute conn "INSERT INTO weather (the_date, temperature) \
+                       \ VALUES (?,?)" (WeatherField d t'))
   ok emptyJSONResponse
 
 {-| Update a date/temperature pair. -}
 updateHandler :: Text -> Text -> Connection -> ServerPart Response
 updateHandler d t conn = do
-  liftIO (execute conn "UPDATE weather SET temperature = ? WHERE the_date = ?" (Only t))
+  liftIO (queryNamed conn "UPDATE weather \
+                          \ SET temperature = :dt1 \
+                          \ WHERE the_date = :dt2"
+                          [":dt1" := t, ":dt2" := d] :: IO [WeatherField])
   ok emptyJSONResponse
 
 {-| Return 404 Not Found and an empty JSON object -}
@@ -115,7 +120,8 @@ aboveTHandler :: Text -> Connection -> ServerPart Response
 aboveTHandler t conn = do
   r <- liftIO (queryNamed conn "SELECT the_date, temperature \
                                \ FROM  weather \
-                               \ WHERE temperature >= :dt" [":dt" := t] :: IO [WeatherField])
+                               \ WHERE temperature >= :dt"
+                               [":dt" := t] :: IO [WeatherField])
   liftIO $ debugM "Above Query" $ listToOutput r
   case r of
     [] -> notFoundHandler

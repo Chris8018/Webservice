@@ -33,7 +33,8 @@ populateDB conn = do
   ls <- fmap lines $ readFile "data/weather.txt"
   mapM_ (\l -> do let (x:xs) = splitOn "]" (tail l)
                       num = (read (dropWhile isSpace (concat xs)))::Float
-                  execute conn "INSERT INTO weather (the_date, temperature) VALUES (?,?)" (WeatherField (T.pack x) num)) ls
+                  execute conn "INSERT INTO weather (the_date, temperature) \
+                               \ VALUES (?,?)" (WeatherField (T.pack x) num)) ls
         
 
 makeFile = do

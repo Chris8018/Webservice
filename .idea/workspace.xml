@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5567bed2-01db-4180-b08e-91b7fbe7f0af" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/haskell-webservice.cabal" beforeDir="false" afterPath="$PROJECT_DIR$/haskell-webservice.cabal" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DB/Main.hs" beforeDir="false" afterPath="$PROJECT_DIR$/src/DB/Main.hs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.hs" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.hs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/WeatherService/Service.hs" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherService/Service.hs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/WeatherService/WRService.hs" beforeDir="false" afterPath="$PROJECT_DIR$/src/WeatherService/WRService.hs" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,20 +18,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="WRService.hs" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/WeatherService/WRService.hs">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="14" column="2" lean-forward="true" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+            <state relative-caret-position="162">
+              <caret line="45" column="101" lean-forward="true" selection-start-line="45" selection-start-column="101" selection-end-line="45" selection-end-column="101" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="haskell-webservice.cabal" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/haskell-webservice.cabal">
+      <file leaf-file-name="WRService.hs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/WeatherService/WRService.hs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="349">
-              <caret line="57" column="37" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
+            <state relative-caret-position="378">
+              <caret line="126" column="50" lean-forward="true" selection-start-line="126" selection-start-column="50" selection-end-line="126" selection-end-column="50" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WRMain.hs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/WRMain.hs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -55,17 +68,17 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/DB/Main.hs" />
         <option value="$PROJECT_DIR$/src/WeatherService/Pages.hs" />
-        <option value="$PROJECT_DIR$/src/WeatherService/Service.hs" />
         <option value="$PROJECT_DIR$/src/WebRoutes.hs" />
-        <option value="$PROJECT_DIR$/src/Main.hs" />
         <option value="$PROJECT_DIR$/tests/Main.hs" />
         <option value="$PROJECT_DIR$/src/WRMain.hs" />
         <option value="$PROJECT_DIR$/ChangeLog.md" />
-        <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/src/WeatherService/WRService.hs" />
         <option value="$PROJECT_DIR$/haskell-webservice.cabal" />
+        <option value="$PROJECT_DIR$/src/DB/Main.hs" />
+        <option value="$PROJECT_DIR$/src/WeatherService/Service.hs" />
+        <option value="$PROJECT_DIR$/src/Main.hs" />
+        <option value="$PROJECT_DIR$/src/WeatherService/WRService.hs" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -80,6 +93,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -112,9 +126,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -214,7 +227,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1301" height="772" extended-state="6" />
+    <frame x="64" y="-11" width="1303" height="780" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
@@ -248,6 +261,13 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="972">
+          <caret line="54" column="16" lean-forward="true" selection-start-line="54" selection-start-column="16" selection-end-line="54" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="846">
@@ -495,13 +515,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DB/Main.hs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-200">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/oldREADME.md">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="113">
@@ -511,13 +524,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/WeatherService/Pages.hs" />
     <entry file="file://$PROJECT_DIR$/src/WebRoutes.hs" />
-    <entry file="file://$PROJECT_DIR$/src/Main.hs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="23" column="9" lean-forward="true" selection-start-line="23" selection-start-column="9" selection-end-line="23" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dist/test/haskell-webservice-0.1.0.0-test-webservice.log">
       <provider selected="true" editor-type-id="LogFileEditorProvider">
         <state relative-caret-position="216">
@@ -539,41 +545,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/WeatherService/Service.hs">
+    <entry file="file://$PROJECT_DIR$/haskell-webservice.cabal">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1170">
-          <caret line="16" column="48" lean-forward="true" selection-start-line="16" selection-start-column="48" selection-end-line="16" selection-end-column="48" />
+        <state relative-caret-position="349">
+          <caret line="57" column="37" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
+    <entry file="file://$PROJECT_DIR$/src/Main.hs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="522">
-          <caret line="65" column="12" selection-start-line="65" selection-start-column="12" selection-end-line="65" selection-end-column="12" />
+        <state relative-caret-position="72">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/WeatherService/Service.hs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="61">
+          <caret line="65" column="29" lean-forward="true" selection-start-line="65" selection-start-column="29" selection-end-line="65" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DB/Main.hs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="65">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/WRMain.hs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="17" column="40" lean-forward="true" selection-start-line="17" selection-start-column="40" selection-end-line="17" selection-end-column="40" />
+        <state relative-caret-position="216">
+          <caret line="12" column="29" selection-start-line="12" selection-start-column="29" selection-end-line="12" selection-end-column="29" />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Setup.hs">
-      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/src/WeatherService/WRService.hs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="14" column="2" lean-forward="true" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+        <state relative-caret-position="378">
+          <caret line="126" column="50" lean-forward="true" selection-start-line="126" selection-start-column="50" selection-end-line="126" selection-end-column="50" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/haskell-webservice.cabal">
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="57" column="37" selection-start-line="57" selection-start-column="37" selection-end-line="57" selection-end-column="37" />
+        <state relative-caret-position="162">
+          <caret line="45" column="101" lean-forward="true" selection-start-line="45" selection-start-column="101" selection-end-line="45" selection-end-column="101" />
         </state>
       </provider>
     </entry>

@@ -4,7 +4,7 @@ module WeatherService.WRService (WeatherField(..)
                                 , site
                                 , homePage
                                 , dayHandler
-                                , dayPutHandler
+                                , putHandler
                                 , rangeHandler
                                 , maxHandler
                                 , aboveTHandler) where
@@ -46,11 +46,11 @@ instance FromJSON WeatherField -- ^ Marshal data from JSON to our ADT
 {-| Site Map -}
 data Sitemap
   = Weather           --weather/                  (home page)
-  | Date Text         --date/date
-  | DatePut Text Text --date-put/date/temperature
-  | Range Text Text   --range/date1/date2
-  | Max Text Text     --max/date1/date2
-  | Above Text        --above/temperature
+  | Date Text         --weather/date/YYYY-mm-dd
+  | Put Text Text     --weather/put/date/temperature
+  | Range Text Text   --weather/range/date1/date2
+  | Max Text Text     --weather/max/date1/date2
+  | Above Text        --weather/above/temperature
 
 $(derivePathInfo ''Sitemap)
 
@@ -60,7 +60,7 @@ route conn url =
   case url of
     Weather       -> homePage
     (Date d)      -> dayHandler d conn
-    (DatePut d t) -> dayPutHandler d t conn
+    (Put d t)     -> putHandler d t conn
     (Range d1 d2) -> rangeHandler d1 d2 conn
     (Max d1 d2)   -> maxHandler d1 d2 conn
     (Above t)     -> aboveTHandler t conn
@@ -77,7 +77,7 @@ homePage = ok $ toResponse $ pack "Home Page\n\
                                   \  /weather/date/d\n\
                                   \\n\
                                   \To insert new day or update new temperature:\n\
-                                  \  /weather/date/d/t\n\
+                                  \  /weather/put/d/t\n\
                                   \\n\
                                   \To check temperature in between a range:\n\
                                   \  /weather/range/d1/d2\n\
@@ -101,12 +101,12 @@ dayHandler d conn = do
     _  -> ok $ toResponse $ listToOutput r
 
 {-| Handle PUT requests for date/temperature pairs. -}
-dayPutHandler :: Text -> Text -> Connection -> RouteT Sitemap (ServerPartT IO) Response
-dayPutHandler d t conn = do
+putHandler :: Text -> Text -> Connection -> RouteT Sitemap (ServerPartT IO) Response
+putHandler d t conn = do
   r <- liftIO (queryNamed conn "SELECT the_date, temperature \
                                \ FROM  weather \
                                \ WHERE the_date = :dt" [":dt" := d] :: IO [WeatherField])
-  liftIO $ debugM "Date PUT request" $ listToOutput r
+  liftIO $ debugM "Put request" $ listToOutput r
   case r of
     [] -> insertHandler d t conn
     _  -> updateHandler d t conn
@@ -122,9 +122,10 @@ insertHandler d t conn = do
 {-| Update a date/temperature pair. -}
 updateHandler :: Text -> Text -> Connection -> RouteT Sitemap (ServerPartT IO) Response
 updateHandler d t conn = do
-  liftIO (execute conn "UPDATE weather \
-                       \ SET temperature = ? \
-                       \ WHERE the_date = ?" (Only t))
+  liftIO (queryNamed conn "UPDATE weather \
+                          \ SET temperature = :dt1 \
+                          \ WHERE the_date = :dt2"
+                          [":dt1" := t, ":dt2" := d] :: IO [WeatherField])
   ok emptyJSONResponse
 
 {-| Return 404 Not Found and an empty JSON object -}
@@ -132,7 +133,6 @@ notFoundHandler :: RouteT Sitemap (ServerPartT IO) Response
 notFoundHandler = notFound emptyJSONResponse
 
 {-| An empty JSON object -}
---emptyJSONObject :: RouteT Sitemap (ServerPartT IO) Response
 emptyJSONResponse = toResponse $ pack "[]"
 
 {-| Turn a list of WeatherFields into a JSON object. -}
