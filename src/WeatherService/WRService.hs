@@ -58,35 +58,43 @@ $(derivePathInfo ''Sitemap)
 route :: Connection -> Sitemap -> RouteT Sitemap (ServerPartT IO) Response
 route conn url =
   case url of
-    Weather       -> homePage
-    (Date d)      -> dayHandler d conn
-    (Put d t)     -> putHandler d t conn
-    (Range d1 d2) -> rangeHandler d1 d2 conn
-    (Max d1 d2)   -> maxHandler d1 d2 conn
-    (Above t)     -> aboveTHandler t conn
+    Weather        -> do method [GET, POST]
+                         homePage
+    (Date d)       -> do method [GET, POST]
+                         dayHandler d conn
+    (Put d t)      -> do method PUT
+                         putHandler d t conn
+    (Range d1 d2)  -> do method GET
+                         rangeHandler d1 d2 conn
+    (Max d1 d2)    -> do method GET
+                         maxHandler d1 d2 conn
+    (Above t)      -> do method GET
+                         aboveTHandler t conn
 
 {-| Home Page -}
 homePage :: RouteT Sitemap (ServerPartT IO) Response
-homePage = ok $ toResponse $ pack "Home Page\n\
-                                  \Haskell Weather Service by Chris Tran\n\
-                                  \\n\
-                                  \*Note: d = date (YYYY-mm-dd)\n\
-                                  \       t = temperature\n\
-                                  \\n\
-                                  \To check temperature of a single day:\n\
-                                  \  /weather/date/d\n\
-                                  \\n\
-                                  \To insert new day or update new temperature:\n\
-                                  \  /weather/put/d/t\n\
-                                  \\n\
-                                  \To check temperature in between a range:\n\
-                                  \  /weather/range/d1/d2\n\
-                                  \\n\
-                                  \To find day(s) that has max temperature in between a range:\n\
-                                  \  /weather/max/d1/d2\n\
-                                  \\n\
-                                  \To find day(s) that has higher temperature than t:\n\
-                                  \  /weather/date/d\n"
+homePage = ok $ toResponse $
+              BC.pack "Home Page\n\
+                      \Haskell Weather Service by Chris Tran\n\
+                      \\n\
+                      \*Note: d = date (YYYY-mm-dd)\n\
+                      \       t = temperature\n\
+                      \\n\
+                      \To check temperature of a single day:\n\
+                      \  /weather/date/d\n\
+                      \\n\
+                      \To insert new day or update new temperature:\n\
+                      \In terminal:\n\
+                      \  $ curl -X PUT http://localhost:8000/weather/put/d/t\n\
+                      \\n\
+                      \To check temperature in between a range:\n\
+                      \  /weather/range/d1/d2\n\
+                      \\n\
+                      \To find day(s) that has max temperature in between a range:\n\
+                      \  /weather/max/d1/d2\n\
+                      \\n\
+                      \To find day(s) that has higher temperature than t:\n\
+                      \  /weather/date/d\n"
 
 {-| Handle requests for a single date. -}
 dayHandler :: Text -> Connection -> RouteT Sitemap (ServerPartT IO) Response
@@ -122,10 +130,10 @@ insertHandler d t conn = do
 {-| Update a date/temperature pair. -}
 updateHandler :: Text -> Text -> Connection -> RouteT Sitemap (ServerPartT IO) Response
 updateHandler d t conn = do
-  liftIO (queryNamed conn "UPDATE weather \
+  liftIO (executeNamed conn "UPDATE weather \
                           \ SET temperature = :dt1 \
                           \ WHERE the_date = :dt2"
-                          [":dt1" := t, ":dt2" := d] :: IO [WeatherField])
+                          [":dt1" := t, ":dt2" := d])
   ok emptyJSONResponse
 
 {-| Return 404 Not Found and an empty JSON object -}
@@ -133,7 +141,7 @@ notFoundHandler :: RouteT Sitemap (ServerPartT IO) Response
 notFoundHandler = notFound emptyJSONResponse
 
 {-| An empty JSON object -}
-emptyJSONResponse = toResponse $ pack "[]"
+emptyJSONResponse = toResponse $ BC.pack "[]"
 
 {-| Turn a list of WeatherFields into a JSON object. -}
 listToOutput :: ToJSON a => [a] -> String

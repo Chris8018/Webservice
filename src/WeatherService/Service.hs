@@ -73,10 +73,10 @@ insertHandler d t conn = do
 {-| Update a date/temperature pair. -}
 updateHandler :: Text -> Text -> Connection -> ServerPart Response
 updateHandler d t conn = do
-  liftIO (queryNamed conn "UPDATE weather \
+  liftIO (executeNamed conn "UPDATE weather \
                           \ SET temperature = :dt1 \
                           \ WHERE the_date = :dt2"
-                          [":dt1" := t, ":dt2" := d] :: IO [WeatherField])
+                          [":dt1" := t, ":dt2" := d])
   ok emptyJSONResponse
 
 {-| Return 404 Not Found and an empty JSON object -}

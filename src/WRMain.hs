@@ -16,6 +16,7 @@ import Data.Text              (pack, unpack)
 import Happstack.Server
 import Database.SQLite.Simple
 import Web.Routes.Happstack   (implSite)
+import qualified Data.ByteString.Lazy.Char8 as BC
 
 import WeatherService.WRService
 
@@ -26,8 +27,9 @@ main = do
   conn <- open "data/np-weather.db"
   simpleHTTP nullConf $ msum [
     implSite "http://localhost:8000" "/weather" (site conn)
-    , resp 405 $ toResponse $ pack "Error 405\n\
-                                   \Method is not allowed!\n\
-                                   \Please go back to Home page:\n\
-                                   \http://localhost:8000/weather\n"
+    --Currently, this message can be seen when typing wrong url address
+    , resp 405 $ toResponse $ BC.pack "Error 405\n\
+                                      \Method is not allowed!\n\
+                                      \Please go back to Home page:\n\
+                                      \http://localhost:8000/weather\n"
     ]
