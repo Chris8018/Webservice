@@ -25,7 +25,30 @@ executable           webservice
                      , QuasiQuotes
                      , TemplateHaskell
                      , DeriveGeneric
-  build-depends:       base 
+  build-depends:       base
+                     , bytestring
+                     , aeson
+                     , sqlite-simple
+                     , hslogger
+                     , happstack-server
+                     , web-routes
+                     , web-routes-happstack
+                     , web-routes-th
+                     , text
+                     , transformers
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+
+executable           oldwebservice
+  main-is:             OldMain.hs
+  other-modules:       WeatherService.OldService
+  other-extensions:    OverloadedStrings
+                     , FlexibleContexts
+                     , TypeFamilies
+                     , QuasiQuotes
+                     , TemplateHaskell
+                     , DeriveGeneric
+  build-depends:       base
                      , bytestring
                      , aeson
                      , sqlite-simple
@@ -33,29 +56,6 @@ executable           webservice
                      , happstack-server
                      , text
                      , transformers
-  hs-source-dirs:      src
-  default-language:    Haskell2010
-
-executable           webroutes
-  main-is:             WRMain.hs
-  other-modules:       WeatherService.WRService
-  other-extensions:    OverloadedStrings
-                       , FlexibleContexts
-                       , TypeFamilies
-                       , QuasiQuotes
-                       , TemplateHaskell
-                       , DeriveGeneric
-  build-depends:       base
-                       , bytestring
-                       , aeson
-                       , sqlite-simple
-                       , hslogger
-                       , happstack-server
-                       , web-routes
-                       , web-routes-happstack
-                       , web-routes-th
-                       , text
-                       , transformers
   hs-source-dirs:      src
   default-language:    Haskell2010
 
@@ -86,7 +86,7 @@ executable           DB-setup
 test-suite           test-webservice
     type:            exitcode-stdio-1.0
     main-is:         Main.hs
-    other-modules:   WeatherService.Service
+    other-modules:   WeatherService.OldService
     other-extensions:    OverloadedStrings
     hs-source-dirs:  tests, src
     build-depends:   base

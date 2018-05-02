@@ -5,7 +5,7 @@ import Test.Tasty (testGroup)
 import Test.HTTP
 import Data.List (isInfixOf)
 import Data.Aeson (decode)
-import WeatherService.Service
+import WeatherService.OldService
 import qualified Data.ByteString.Lazy.Char8 as LB
 
 url = "http://localhost:8000/weather/"

@@ -1,43 +1,32 @@
-{-# LANGUAGE OverloadedStrings, FlexibleContexts, TypeFamilies, QuasiQuotes
-  , TemplateHaskell, DeriveGeneric #-}
+{-# LANGUAGE OverloadedStrings, FlexibleContexts, TypeFamilies #-}
 module Main where
 {-| Semester 2 assignment for CI285, University of Brighton
     Jim Burton <j.burton@brighton.ac.uk>
     Modifier: Chris Tran - 15800120
 -}
-import           System.Log.Logger ( updateGlobalLogger
-                                   , rootLoggerName
-                                   , setLevel
-                                   , debugM
-                                   , Priority(..)
-                                   )
-import           Control.Monad          (msum)
-import           Happstack.Server  
-import           Database.SQLite.Simple
-import           Data.Text              (pack)
+import System.Log.Logger      ( updateGlobalLogger
+                              , rootLoggerName
+                              , setLevel
+                              , debugM
+                              , Priority(..)
+                              )
+import Control.Monad          (msum)
+import Data.Text              (pack, unpack)
 
-import           WeatherService.Service
+import Happstack.Server
+import Database.SQLite.Simple
+import Web.Routes.Happstack   (implSite)
+import qualified Data.ByteString.Lazy.Char8 as BC
 
-{-| Entry point. Connects to the database and passes the connection to the
-routing function. -}
+import WeatherService.Service
+
+{-| Entry point -}
 main :: IO()
 main = do
   updateGlobalLogger rootLoggerName (setLevel INFO) -- change level to DEBUG for testing
   conn <- open "data/np-weather.db"
-  simpleHTTP nullConf $  do
+  simpleHTTP nullConf $ do
     setHeaderM "Content-Type" "application/json"
     msum [
-      dirs "weather/date" $ do method [GET, POST]
-                               path $ \d -> dayHandler d conn
-      {-, dirs "weather/put" $ do method GET
-                                       path $ \d -> path $ \t -> dayPutHandler d t conn-}
-      , dirs "weather/date" $ do method PUT
-                                 path $ \d -> path $ \t -> dayPutHandler d t conn
-      , dirs "weather/range" $ do method GET
-                                  path $ \d1 -> path $ \d2 -> rangeHandler d1 d2 conn
-      , dirs "weather/max" $ do method GET
-                                path $ \d1 -> path $ \d2 -> maxHandler d1 d2 conn
-      , dirs "weather/above" $ do method GET
-                                  path $ \t -> aboveTHandler t conn
-      , resp 405 $ toResponse $ pack "Method is not allowed\n"
+      implSite "http://localhost:8000" "/weather" (site conn)
       ]

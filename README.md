@@ -18,30 +18,29 @@ Return JSON file if weather data for that date is held.
 Insert or update a date/temperature pair in the database.
 *  webservice:
 
-    $ curl -X PUT weather/date/YYYY-mm-dd/temperature
-
-*  webroutes:
-
     $ curl -X PUT weather/put/YYYY-mm-dd/temperature
+
+*  oldwebservice:
+
+    $ curl -X PUT weather/date/YYYY-mm-dd/temperature
 
 ** Range dates query (GET): weather/range/d1/d2
 **                   where: d1  = YYYY-mm-dd
 **                          d2  = YYYY-mm-dd
-**                          d1 != d2
+**                          d1  != d2
 Return JSON file if weather data for dates between date d1 and d2 are held.
 
 ** Max dates query (GET): weather/max/d1/d2
 **                 where: d1  = YYYY-mm-dd
 **                        d2  = YYYY-mm-dd
-**                        d1 != d2
+**                        d1  != d2
 Return JSON file if weather data for dates between date d1 and d2 with highest temperature are held.
 
 ** Above temperature query (GET): weather/above/t
 **                         where: t is a real number
 Return JSON file if weather data for dates that have temperature higher than t.
 
-** Send error 405 and messages on illegal request.
-*  Currently, this message can be seen when typing wrong url address
+** Return 405 Method not allowed and an empty JSON object on wrong request methods.
 
 ## Installation
 
@@ -83,11 +82,11 @@ Return JSON file if weather data for dates that have temperature higher than t.
 
     $ cabal run webservice
 
-*Run webroutes (web routes version of webservice)
+*Run old webservice
 
-    $ cabal run webroutes
+    $ cabal run oldwebservice
 
-**Try test (work on both webservice and webroutes)
+**Try test (work on both webservice and oldwebservice)
 While THE SERIVICE is RUNNING open a new terminal and run the tests:
 
     $ cabal test
